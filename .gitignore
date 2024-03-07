@@ -1,0 +1,4 @@
+data/processed/*
+data/raw/Train/
+models/*
+.vscode/*
