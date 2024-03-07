@@ -1,8 +1,5 @@
 # folders to ignore
-data/processed/*
-data/raw/Val/
-data/raw/zipfiles/*
-data/raw/Train/
+data/*
 src/plots/*
 scripts/lightning_logs/
 scripts/wandb/
