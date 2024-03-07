@@ -340,3 +340,56 @@ def stack_satellite_data(
 
     # Return the stacked satelliet data and the list Metadata objects.
     return sat_data_stack, metadata_stack
+
+def load_satellite_dir(
+        data_dir: str | os.PathLike,
+        satellite_type: str
+        ) -> Tuple[np.ndarray, List[Metadata]]:
+    """
+    Load all bands for a given satellite type from a directory of multiple
+    tile files.
+
+    Parameters
+    ----------
+    data_dir : str or os.PathLike
+        The directory containing the satellite tiles.
+    satellite_type : str
+        The type of satellite, one of "viirs", "sentinel1", "sentinel2",
+        "landsat", "gt"
+
+    Returns
+    -------
+    Tuple[np.ndarray, List[Metadata]]
+        A tuple containing the satellite data as a volume with
+        dimensions (tile_dir, time, band, height, width) and a list of the
+        Metadata objects.
+    """
+    all = []
+    files = []
+    for dir in os.listdir(data_dir):
+        data, filenames = load_satellite(Path(data_dir) / dir, satellite_type)
+        all.append(data)
+        files.append(filenames)
+    
+    arr = np.stack(all, axis=0)
+    return (arr, files)
+    
+
+def get_unique_dates_and_bands(
+        metadata_keys: Set[Tuple[str, str]]
+        ) -> Tuple[Set[str], Set[str]]:
+    """
+    Extract unique dates and bands from satellite metadata keys.
+
+    Parameters
+    ----------
+    metadata_keys : Set[Tuple[str, str]]
+        A set of tuples containing the date and band for each satellite file.
+
+    Returns
+    -------
+    Tuple[Set[str], Set[str]]
+        A tuple containing the unique dates and bands.
+    """
+    i, j = zip(*metadata_keys)
+    return (set(i), set(j))
