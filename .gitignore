@@ -10,7 +10,7 @@ models/*
 my-first-sweep/
 data/predictions/
 models/*
-esdenv
+environment/*
 references/*
 .vscode/*
 wandb/
