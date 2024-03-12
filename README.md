@@ -37,7 +37,7 @@ To deactivate the virtual environment, type `deactivate`.
 
 Please download and unzip the `dfc2021_dse_train.zip` saving the `Train` directory into the `data/raw` directory. The zip file is available at the following [link](https://drive.google.com/file/d/1mVDV9NkmyfZbkSiD5lkskv_MwOuYxiog/view).
 
-You may also find it useful to create a `data/raw/processed` and a `data/raw/predictions` directory.
+You may also find it useful to create a `data/processed` and a `data/predictions` directory.
 
 ### Weights and Biases
 
