@@ -56,6 +56,7 @@ Distributed under the MIT License. See `LICENSE` for more information.
 
 ## Contact
 
+- Drew Sypnieski - [Github](https://github.com/Drew-1771) - asypnies@uci.edu; drewsyp@gmail.com
 - Aaron Blume - [LinkedIn](https://www.linkedin.com/in/aaron-blume/) - [GitHub](https://github.com/aaronist) - amblume@uci.edu
 
 
