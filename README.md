@@ -1,10 +1,12 @@
 # Final Project: ViT-AugReg Model and Comparison
 
-### "The Sentinels" Contributors:
-Drew Sypnieski<br/>
-Aaron Blume<br/>
-Angela Duran<br/>
-Byron Fong<br/>
+[![The Sentinels Banner](https://svg-banners.vercel.app/api?type=luminance&text1=💡The%20Sentinels&width=800&height=400)](https://github.com/cs175cv-w2024/final-project-the-sentinels)
+
+## The Sentinels Contributors
+- Drew Sypnieski
+- Aaron Blume
+- Angela Duran
+- Byron Fong
 
 ![PyTorch](https://img.shields.io/badge/PyTorch-%23EE4C2C.svg?style=for-the-badge&logo=PyTorch&logoColor=white)
 ![PyTorch Lightning](https://img.shields.io/badge/Lightning-792DE4?style=for-the-badge&logo=lightning&logoColor=white)
@@ -95,3 +97,4 @@ These are the resources we used to help develop this project.
 * [Cook Your First UNet in PyTorch](https://towardsdatascience.com/cook-your-first-u-net-in-pytorch-b3297a844cf3)
 * [How to train your ViT? Data, Augmentation, and Regularization in Vision Transformers](https://arxiv.org/abs/2106.10270)
 * [Tuning Hyperparameters with Weights & Biases](https://docs.wandb.ai/guides/sweeps)
+* [Add SVG Banners to your README](https://github.com/Akshay090/svg-banners)
