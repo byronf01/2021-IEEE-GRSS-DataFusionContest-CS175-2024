@@ -46,7 +46,7 @@ def restitch_and_plot(
     # colormap for the images.
     # On one of the 1d images' axs[i].imshow, make sure to save its output as
     # `im`, i.e, im = axs[i].imshow
-    stitched_images = restitch_eval(
+    stitched_images = list(restitch_eval(
         options.processed_dir,
         satellite_type,
         parent_tile_id,
@@ -54,7 +54,9 @@ def restitch_and_plot(
         (0, options.tile_size_gt),
         datamodule,
         model,
-    )
+    ))
+
+    stitched_images[2] = np.reshape(stitched_images[2], (4, 16, 16))
 
     for i in range(len(stitched_images)):
         if i == 0:
@@ -160,6 +162,7 @@ def restitch_eval(
             # i.e., (batch_size, channels, width, height) with batch_size = 1
             # make sure that the tile is in GPU memory, i.e., X = X.cuda()
             X = X.unsqueeze(0)
+            X = torch.nn.functional.pad(X, (12, 12, 12, 12), "constant", 0)
             predictions = model.forward(X)
 
             # convert y to numpy array

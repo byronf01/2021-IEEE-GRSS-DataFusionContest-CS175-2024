@@ -35,13 +35,13 @@ ROOT = Path.cwd()
 class EvalConfig:
     processed_dir: str | os.PathLike = ROOT / "data" / "processed" / "4x4"
     raw_dir: str | os.PathLike = ROOT / "data" / "raw" / "Train"
-    results_dir: str | os.PathLike = ROOT / "data" / "predictions" / "UNet"
+    results_dir: str | os.PathLike = ROOT / "data" / "predictions" / "AugReg"
     selected_bands: None = None
     tile_size_gt: int = 4
     batch_size: int = 8
     seed: int = 12378921
     num_workers: int = 11
-    model_path: str | os.PathLike = ROOT / "models" / "UNet" / "last.ckpt"
+    model_path: str | os.PathLike = ROOT / "models" / "AugReg" / "Ti_16-i21k-300ep-lr_0.001-aug_none-wd_0.03-do_0.0-sd_0.0--imagenet2012-steps_20k-lr_0.03-res_224.pth"
 
 
 def main(options):
@@ -61,15 +61,16 @@ def main(options):
     datamodule.setup("fit")
 
     # load model from checkpoint at options.model_path
-    model = ESDSegmentation("UNet", 99, 4)
+    model = ESDSegmentation("AugReg", 99, 4)
     checkpoint = torch.load(options.model_path)
-    model.load_state_dict(checkpoint["state_dict"])
+    model.load_state_dict(checkpoint, strict = False)
 
     # set the model to evaluation mode (model.eval())
     # this is important because if you don't do this, some layers
     # will not evaluate properly
     model.eval()
 
+    '''
     # instantiate pytorch lightning trainer
     trainer = pl.Trainer(
         devices=1,
@@ -84,6 +85,7 @@ def main(options):
         ckpt_path=options.model_path,
         datamodule=datamodule,
     )
+    '''
 
     val_parent_tiles = set(int(filename.name[4]) if filename.name[5] == '_' else int(filename.name[4:6]) for filename in list(Path(options.processed_dir / 'Val' / 'subtiles').glob('*')))
 

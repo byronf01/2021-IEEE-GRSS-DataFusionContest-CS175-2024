@@ -10,6 +10,7 @@ sys.path.append(".")
 from src.models.supervised.segmentation_cnn import SegmentationCNN
 from src.models.supervised.unet import UNet
 from src.models.supervised.resnet_transfer import FCNResnetTransfer
+from src.models.supervised.augreg import AugReg
 
 
 class ESDSegmentation(pl.LightningModule):
@@ -50,6 +51,8 @@ class ESDSegmentation(pl.LightningModule):
             self.model = UNet(in_channels, out_channels, **model_params)
         elif model_type == "FCNResnetTransfer":
             self.model = FCNResnetTransfer(in_channels, out_channels, **model_params)
+        elif model_type == 'AugReg':
+            self.model = AugReg(in_channels, out_channels, **model_params)
 
         self.lr = learning_rate
         self.loss = nn.CrossEntropyLoss()
