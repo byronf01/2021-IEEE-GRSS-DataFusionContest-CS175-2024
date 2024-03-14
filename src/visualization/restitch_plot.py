@@ -162,7 +162,6 @@ def restitch_eval(
             # i.e., (batch_size, channels, width, height) with batch_size = 1
             # make sure that the tile is in GPU memory, i.e., X = X.cuda()
             X = X.unsqueeze(0)
-            X = torch.nn.functional.pad(X, (12, 12, 12, 12), "constant", 0)
             predictions = model.forward(X)
 
             # convert y to numpy array
