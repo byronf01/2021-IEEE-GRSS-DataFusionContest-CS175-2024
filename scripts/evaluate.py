@@ -62,8 +62,8 @@ def main(options):
 
     # load model from checkpoint at options.model_path
     model = ESDSegmentation("AugReg", 99, 4)
-    checkpoint = torch.load(options.model_path)
-    model.load_state_dict(checkpoint, strict = False)
+    #checkpoint = torch.load(options.model_path)
+    #model.load_state_dict(checkpoint)
 
     # set the model to evaluation mode (model.eval())
     # this is important because if you don't do this, some layers
