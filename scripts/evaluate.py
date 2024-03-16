@@ -35,13 +35,13 @@ ROOT = Path.cwd()
 class EvalConfig:
     processed_dir: str | os.PathLike = ROOT / "data" / "processed" / "4x4"
     raw_dir: str | os.PathLike = ROOT / "data" / "raw" / "Train"
-    results_dir: str | os.PathLike = ROOT / "data" / "predictions" / "AugReg"
+    results_dir: str | os.PathLike = ROOT / "data" / "predictions" / "Segformer"
     selected_bands: None = None
     tile_size_gt: int = 4
     batch_size: int = 8
     seed: int = 12378921
     num_workers: int = 11
-    model_path: str | os.PathLike = ROOT / "models" / "AugReg" / "Ti_16-i21k-300ep-lr_0.001-aug_none-wd_0.03-do_0.0-sd_0.0--imagenet2012-steps_20k-lr_0.03-res_224.pth"
+    model_path: str | os.PathLike = ROOT / "models" / "Segformer" / "last.ckpt"
 
 
 def main(options):
@@ -61,7 +61,7 @@ def main(options):
     datamodule.setup("fit")
 
     # load model from checkpoint at options.model_path
-    model = ESDSegmentation("AugReg", 99, 4)
+    model = ESDSegmentation("Segformer", 99, 4)
     #checkpoint = torch.load(options.model_path)
     #model.load_state_dict(checkpoint)
 

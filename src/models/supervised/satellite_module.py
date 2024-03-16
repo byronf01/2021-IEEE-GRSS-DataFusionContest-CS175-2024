@@ -10,7 +10,7 @@ sys.path.append(".")
 from src.models.supervised.segmentation_cnn import SegmentationCNN
 from src.models.supervised.unet import UNet
 from src.models.supervised.resnet_transfer import FCNResnetTransfer
-from src.models.supervised.augreg import AugReg
+from src.models.supervised.segformer import Segformer
 
 
 class ESDSegmentation(pl.LightningModule):
@@ -51,8 +51,8 @@ class ESDSegmentation(pl.LightningModule):
             self.model = UNet(in_channels, out_channels, **model_params)
         elif model_type == "FCNResnetTransfer":
             self.model = FCNResnetTransfer(in_channels, out_channels, **model_params)
-        elif model_type == 'AugReg':
-            self.model = AugReg(in_channels, out_channels, **model_params)
+        elif model_type == 'Segformer':
+            self.model = Segformer(in_channels, out_channels, **model_params)
 
         self.lr = learning_rate
         self.loss = nn.CrossEntropyLoss()
@@ -120,6 +120,7 @@ class ESDSegmentation(pl.LightningModule):
             Gradients will not propagate unless the tensor is a scalar tensor.
         """
         sat_img, mask, _ = batch
+        mask = torch.nn.functional.interpolate(mask, size=(50,50), mode='bilinear')
 
         # Perform casting and manipulation operations
         sat_img = sat_img.to(torch.float32)
@@ -128,7 +129,6 @@ class ESDSegmentation(pl.LightningModule):
 
         # Predict the value using self.forward
         out = self.forward(sat_img)
-        out = torch.nn.functional.interpolate(out, size=(4,4), mode='bilinear')
 
         # Log the metrics
         self.log("train_Accuracy", self.train_acc(out, mask))
@@ -171,6 +171,7 @@ class ESDSegmentation(pl.LightningModule):
             Gradients will not propagate unless the tensor is a scalar tensor.
         """
         sat_img, mask, _ = batch
+        mask = torch.nn.functional.interpolate(mask, size=(50,50), mode='bilinear')
 
         # Perform casting and manipulation operations
         sat_img = sat_img.to(torch.float32)
@@ -179,7 +180,6 @@ class ESDSegmentation(pl.LightningModule):
 
         # Predict the value using self.forward
         out = self.forward(sat_img)
-        out = torch.nn.functional.interpolate(out, size=(4,4), mode='bilinear')
 
         # Log the metrics
         self.log("val_Accuracy", self.val_acc(out, mask))
