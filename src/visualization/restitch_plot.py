@@ -56,7 +56,7 @@ def restitch_and_plot(
         model,
     ))
 
-    stitched_images[2] = np.reshape(stitched_images[2], (4, 16, 16))
+    stitched_images[2] = torch.nn.functional.interpolate(torch.from_numpy(stitched_images[2]), size=(16,16), mode='bilinear').numpy()
 
     for i in range(len(stitched_images)):
         if i == 0:

@@ -1,7 +1,6 @@
 import torch
 from torch import nn
-from transformers import ViTConfig, ViTModel
-import models.AugReg.upernet_augreg_adapter_tiny_512_160k_ade20k
+from transformers import SegformerForSemanticSegmentation
 
 device = 'cuda' if torch.cuda.is_available() else 'cpu'
 
@@ -10,16 +9,12 @@ class AugReg(nn.Module):
         super(AugReg, self).__init__()
         
         # Create the vision model from config
-        self.config = ViTConfig.from_dict(models.AugReg.upernet_augreg_adapter_tiny_512_160k_ade20k.model)
-        self.config.auxiliary_head['in_channels'] = input_channels
-        self.config.num_channels = input_channels
-        self.config.image_size = 200
-
-        self.model = ViTModel(self.config)
+        self.model = SegformerForSemanticSegmentation.from_pretrained("nvidia/segformer-b0-finetuned-ade-512-512")
 
         # Update the layers in the vision model
-        self.model.pooler.dense = torch.nn.Linear(in_features=768, out_features=16*output_channels, bias=True)
+        self.model.segformer.encoder.patch_embeddings[0].proj = torch.nn.Conv2d(input_channels, 32, kernel_size=(7, 7), stride=(4, 4), padding=(3, 3))
+        self.model.decode_head.classifier = torch.nn.Conv2d(256, output_channels, kernel_size=(1, 1), stride=(1, 1))
       
     def forward(self, x):
         x = self.model(x)
-        return x.pooler_output
+        return x.logits

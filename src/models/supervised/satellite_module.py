@@ -128,6 +128,7 @@ class ESDSegmentation(pl.LightningModule):
 
         # Predict the value using self.forward
         out = self.forward(sat_img)
+        out = torch.nn.functional.interpolate(out, size=(4,4), mode='bilinear')
 
         # Log the metrics
         self.log("train_Accuracy", self.train_acc(out, mask))
@@ -178,6 +179,7 @@ class ESDSegmentation(pl.LightningModule):
 
         # Predict the value using self.forward
         out = self.forward(sat_img)
+        out = torch.nn.functional.interpolate(out, size=(4,4), mode='bilinear')
 
         # Log the metrics
         self.log("val_Accuracy", self.val_acc(out, mask))

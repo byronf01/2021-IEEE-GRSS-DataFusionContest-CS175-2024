@@ -35,7 +35,7 @@ class ESDConfig:
     processed_dir: str | os.PathLike = ROOT / "data" / "processed" / "4x4"
     raw_dir: str | os.PathLike = ROOT / "data" / "raw" / "Train"
     selected_bands: None = None
-    model_type: str = "UNet"
+    model_type: str = "AugReg"
     tile_size_gt: int = 4
     batch_size: int = 8
     max_epochs: int = 2
