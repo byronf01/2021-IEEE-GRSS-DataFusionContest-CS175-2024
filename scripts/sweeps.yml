@@ -1,0 +1,39 @@
+# please use this file to define the parameters for the sweep you would like to run
+program: train.py  # Training script file
+
+method: random  # Search method, e.g., random, grid, bayes, etc.
+
+metric:
+  name: validation_loss  # Metric to optimize, e.g., validation loss
+
+parameters:
+  learning_rate:
+    min: 0.0001
+    max: 0.1
+
+  batch_size:
+    values: [8, 16, 32, 64]
+
+  max_epochs:
+    values: [2, 4, 6]
+
+  model_type:
+    values: ["SegmentationCNN", "UNet", "FCNResnetTransfer"]
+
+  depth:
+    values: [2, 3, 4]
+
+  embedding_size:
+    values: [32, 64, 128]
+
+  kernel_size:
+    values: [3, 5, 7]
+
+  pool_sizes:
+    values: ["5,5,2", "3,3,2", "7,7,2"]
+  
+  depth:
+    values: [2, 3, 4, 5]
+  
+  n_encoders:
+    values: [2, 3, 4, 5]

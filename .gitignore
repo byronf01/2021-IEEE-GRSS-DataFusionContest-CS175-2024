@@ -13,6 +13,7 @@ references/*
 wandb/
 
 .DS_Store
+activate.bat
 
 
 # Byte-compiled / optimized / DLL files

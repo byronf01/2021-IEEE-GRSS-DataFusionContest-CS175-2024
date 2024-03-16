@@ -4,6 +4,7 @@ from typing import List, Tuple
 import numpy as np
 import matplotlib.pyplot as plt
 import matplotlib.colors
+import torch
 import sys
 
 # import relative packages
@@ -17,7 +18,7 @@ def restitch_and_plot(
     model,
     parent_tile_id,
     satellite_type="sentinel2",
-    rgb_bands=[3, 2, 1],
+    rgb_bands=[4, 3, 2],
     image_dir: None | str | os.PathLike = None,
 ):
     """
@@ -37,15 +38,42 @@ def restitch_and_plot(
 
     fig, axs = plt.subplots(nrows=1, ncols=3)
 
+    fig.suptitle(f'Tile {parent_tile_id}', fontsize = 16)
+    subtitles = ['original', 'ground truth', 'prediction']
+
     # make sure to use cmap=cmap, vmin=-0.5 and vmax=3.5 when running
     # axs[i].imshow on the 1d images in order to have the correct
     # colormap for the images.
     # On one of the 1d images' axs[i].imshow, make sure to save its output as
     # `im`, i.e, im = axs[i].imshow
-    stitched_images = restitch_eval(options.processed_dir, satellite_type, parent_tile_id, (0, options.tile_size_gt), (0, options.tile_size_gt), datamodule, model)
-    
+    stitched_images = list(restitch_eval(
+        options.processed_dir,
+        satellite_type,
+        parent_tile_id,
+        (0, options.tile_size_gt),
+        (0, options.tile_size_gt),
+        datamodule,
+        model,
+    ))
+
+    stitched_images[2] = torch.nn.functional.interpolate(torch.from_numpy(stitched_images[2]), size=(16,16), mode='bilinear').numpy()
+
     for i in range(len(stitched_images)):
-        im = axs[i].imshow(stitched_images[i], cmap = cmap, vmin = -0.5, vmax = 3.5)
+        if i == 0:
+            red = stitched_images[i][0][rgb_bands[0]]
+            green = stitched_images[i][0][rgb_bands[1]]
+            blue = stitched_images[i][0][rgb_bands[2]]
+            array = np.dstack((red, green, blue))
+        elif i == 1:
+            array = stitched_images[i].squeeze()
+        elif i == 2:
+            array = np.max(stitched_images[i].squeeze(), axis = 0)
+            min_val, max_val = np.min(array), np.max(array)
+            normalized_array = (array - min_val) / (max_val - min_val)
+            array = 4 * normalized_array - 0.5
+        
+        im = axs[i].imshow(array, cmap=cmap, vmin=-0.5, vmax=3.5)
+        axs[i].set_title(subtitles[i])
 
     # The following lines sets up the colorbar to the right of the images
     fig.subplots_adjust(right=0.8)
@@ -63,8 +91,7 @@ def restitch_and_plot(
     if image_dir is None:
         fig.show()
     else:
-        fig.savefig(Path(image_dir) / "restitched_visible_gt_predction.png")
-        fig.close()
+        fig.savefig(Path(image_dir) / f"tile{parent_tile_id}_restitched_visible_gt_predction.png", bbox_inches = 'tight')
 
 
 def restitch_eval(
@@ -119,10 +146,15 @@ def restitch_eval(
         predictions_subtile_row = []
         satellite_metadata_from_subtile_row = []
         for j in range(*range_y):
-            subtile = Subtile().load(dir / "subtiles" / f"{tile_id}_{i}_{j}.npz")
-            
+            subtile = Subtile().load(
+                dir / "Val" / "subtiles" / f"Tile{tile_id}_{i}_{j}.npz"
+            )
+
             # find the tile in the datamodule
-            # TODO
+            X, y, _ = datamodule.val_dataset.find_subtile(tile_id, i, j)
+            X, y = torch.from_numpy(X).float() if isinstance(X, np.ndarray) else X, (
+                torch.from_numpy(y).float() if isinstance(y, np.ndarray) else y
+            )
 
             # evaluate the tile with the model
             # You need to add a dimension of size 1 at dim 0 so that
@@ -130,13 +162,12 @@ def restitch_eval(
             # i.e., (batch_size, channels, width, height) with batch_size = 1
             # make sure that the tile is in GPU memory, i.e., X = X.cuda()
             X = X.unsqueeze(0)
-            X = X.cuda()
-            y = model.forward(X)
+            predictions = model.forward(X)
 
             # convert y to numpy array
             # detach predictions from the gradient, move to cpu and convert to numpy
-            predictions = y.detach().cpu().numpy()
-            y = y.numpy()
+            predictions = predictions.detach().cpu().numpy()
+            y = y.detach().numpy()
 
             ground_truth_subtile_row.append(y)
             predictions_subtile_row.append(predictions)
