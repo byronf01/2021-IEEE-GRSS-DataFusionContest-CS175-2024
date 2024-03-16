@@ -99,4 +99,5 @@ These are the resources we used to help develop this project.
 * [Cook Your First UNet in PyTorch](https://towardsdatascience.com/cook-your-first-u-net-in-pytorch-b3297a844cf3)
 * [How to train your ViT? Data, Augmentation, and Regularization in Vision Transformers](https://arxiv.org/abs/2106.10270)
 * [Tuning Hyperparameters with Weights & Biases](https://docs.wandb.ai/guides/sweeps)
+* [Efficient Image Segmentation Using PyTorch: Part 4](https://towardsdatascience.com/efficient-image-segmentation-using-pytorch-part-4-6c86da083432)
 * [Add SVG Banners to your README](https://github.com/Akshay090/svg-banners)
