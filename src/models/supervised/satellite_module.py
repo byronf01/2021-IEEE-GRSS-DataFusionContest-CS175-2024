@@ -120,7 +120,6 @@ class ESDSegmentation(pl.LightningModule):
             Gradients will not propagate unless the tensor is a scalar tensor.
         """
         sat_img, mask, _ = batch
-        mask = torch.nn.functional.interpolate(mask, size=(50,50), mode='bilinear')
 
         # Perform casting and manipulation operations
         sat_img = sat_img.to(torch.float32)
@@ -129,6 +128,7 @@ class ESDSegmentation(pl.LightningModule):
 
         # Predict the value using self.forward
         out = self.forward(sat_img)
+        out = torch.nn.functional.interpolate(out, size=(4,4), mode='bilinear')
 
         # Log the metrics
         self.log("train_Accuracy", self.train_acc(out, mask))
@@ -171,7 +171,6 @@ class ESDSegmentation(pl.LightningModule):
             Gradients will not propagate unless the tensor is a scalar tensor.
         """
         sat_img, mask, _ = batch
-        mask = torch.nn.functional.interpolate(mask, size=(50,50), mode='bilinear')
 
         # Perform casting and manipulation operations
         sat_img = sat_img.to(torch.float32)
@@ -180,6 +179,7 @@ class ESDSegmentation(pl.LightningModule):
 
         # Predict the value using self.forward
         out = self.forward(sat_img)
+        out = torch.nn.functional.interpolate(out, size=(4,4), mode='bilinear')
 
         # Log the metrics
         self.log("val_Accuracy", self.val_acc(out, mask))

@@ -129,7 +129,7 @@ def train(options: ESDConfig):
             verbose=True,
             monitor="val_loss",
             mode="min",
-            every_n_train_steps=1000,
+            every_n_train_steps=16,
         ),
         LearningRateMonitor(),
         RichProgressBar(),
