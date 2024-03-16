@@ -1,4 +1,4 @@
-# Final Project: ViT-AugReg Model and Comparison
+# Final Project: SegFormer Model and Comparison
 
 [![The Sentinels Banner](https://svg-banners.vercel.app/api?type=luminance&text1=💡The%20Sentinels&width=800&height=400)](https://github.com/cs175cv-w2024/final-project-the-sentinels)
 
@@ -25,7 +25,7 @@ In this repository, we've implemented three baseline models to complete this tas
 - A basic convolutional neural network to perform segmentation, located in `src/models/supervised/segmentation_cnn.py`
 - A modified FCN-ResNet model, located in `src/models/supervised/resnet_transfer.py`
 
-We also developed a fourth model: a pretrained AugReg Vision Transformer (ViT) which has been modified to this task's requirements.
+We also developed a fourth model: a pretrained transformer model for semantic segmentation, [SegFormer](https://huggingface.co/docs/transformers/en/model_doc/segformer), which has been modified to this task's requirements. It consists of hierarchical encoding blocks to transform the data followed by an MLP decoder head which performs the segmentation task.
 
 
 ## Getting Started
@@ -85,8 +85,10 @@ Distributed under the MIT License. See `LICENSE` for more information.
 
 ## Contact
 
-- Drew Sypnieski - [Github](https://github.com/Drew-1771) - asypnies@uci.edu; drewsyp@gmail.com
+- Drew Sypnieski - [GitHub](https://github.com/Drew-1771) - asypnies@uci.edu; drewsyp@gmail.com
 - Aaron Blume - [LinkedIn](https://www.linkedin.com/in/aaron-blume/) - [GitHub](https://github.com/aaronist) - amblume@uci.edu
+- Angela Duran - [GitHub](https://github.com/AngelaDuran)
+- Byron Fong - [GitHub](https://github.com/byronf01)
 
 
 ## Acknowledgments
