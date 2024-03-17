@@ -27,6 +27,8 @@ In this repository, we've implemented three baseline models to complete this tas
 
 We also developed a fourth model: a pretrained transformer model for semantic segmentation, [SegFormer](https://huggingface.co/docs/transformers/en/model_doc/segformer), which has been modified to this task's requirements. It consists of hierarchical encoding blocks to transform the data followed by an MLP decoder head which performs the segmentation task.
 
+![SegFormer](assets/segformer.png)
+
 
 ## Getting Started
 
