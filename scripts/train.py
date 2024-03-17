@@ -40,7 +40,7 @@ class ESDConfig:
     batch_size: int = 8
     max_epochs: int = 2
     seed: int = 12378921
-    learning_rate: float = 1e-3
+    learning_rate: float = 3e-5
     num_workers: int = 7
     accelerator: str = "gpu" if platform.system() != "Darwin" else "mps"
     devices: int = 1
@@ -123,13 +123,13 @@ def train(options: ESDConfig):
     callbacks = [
         ModelCheckpoint(
             dirpath=ROOT / "models" / options.model_type,
-            filename="{epoch}-{val_loss:.2f}-{other_metric:.2f}",
-            save_top_k=0,
+            filename="{epoch}",
+            save_top_k=1,
             save_last=True,
             verbose=True,
-            monitor="val_loss",
-            mode="min",
-            every_n_train_steps=16,
+            monitor="val_Accuracy",
+            mode="max",
+            every_n_epochs=1,
         ),
         LearningRateMonitor(),
         RichProgressBar(),
