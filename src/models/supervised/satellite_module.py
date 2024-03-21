@@ -4,6 +4,7 @@ from torch.optim import Adam
 from torch import nn
 import torchmetrics
 import sys
+from torch.optim.lr_scheduler import ReduceLROnPlateau
 
 # import relative packages
 sys.path.append(".")
@@ -199,4 +200,6 @@ class ESDSegmentation(pl.LightningModule):
             optimizer: torch.optim.Optimizer
                 Optimizer used to minimize the loss
         """
-        return Adam(self.parameters(), lr=self.lr)
+        optimizer = Adam(self.parameters(), lr=self.lr)
+        scheduler = ReduceLROnPlateau(optimizer)
+        return {'optimizer': optimizer, 'lr_scheduler': scheduler, 'monitor': 'val_Accuracy'}
