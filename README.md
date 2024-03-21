@@ -90,7 +90,7 @@ Distributed under the MIT License. See `LICENSE` for more information.
 - Drew Sypnieski - [GitHub](https://github.com/Drew-1771) - asypnies@uci.edu; drewsyp@gmail.com
 - Aaron Blume - [LinkedIn](https://www.linkedin.com/in/aaron-blume/) - [GitHub](https://github.com/aaronist) - amblume@uci.edu
 - Angela Duran - [GitHub](https://github.com/AngelaDuran)
-- Byron Fong - [GitHub](https://github.com/byronf01)
+- Byron Fong - [LinkedIn](https://www.linkedin.com/in/byron-yf/) - [GitHub](https://github.com/byronf01) - byron.fong@gmail.com
 
 
 ## Acknowledgments
